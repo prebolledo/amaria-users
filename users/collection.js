@@ -1,7 +1,7 @@
 const users = []
 users.push({
     id:1,
-    name:"Pablo",
+    name:"Pablo2",
     email:"pablo.rebolledo@amaris.com",
     active:true,
     friends:[2,5]

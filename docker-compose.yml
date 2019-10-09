@@ -1,0 +1,40 @@
+version: '3.7'
+services: 
+  mongo:
+      container_name: mongo-users
+      image: mongo
+      networks:
+          - backend        
+      ports:
+          - "27017:27017"
+      volumes:
+          - data-volume:/data/db
+  amaris-users:
+    container_name: amaris-users
+    image: 'amaris/users'
+    networks:
+        - backend      
+    ports:
+      - "4000:4000"
+      - "9000:9229"      
+    build: 
+      context: .
+      dockerfile: Dockerfile      
+    environment:
+      PORT: 4000
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+        - mongo      
+
+networks:
+    backend:
+        ipam:
+            driver: default
+            config:
+                - subnet: "172.16.1.0/24"
+                
+volumes:
+    data-volume:        

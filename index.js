@@ -32,7 +32,7 @@ server(
             }
             
         })     
-           
+
         app.post('/',(req, res, next)=>{
             res.status(200).json(users.create(req.body)) 
         })        

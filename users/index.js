@@ -1,6 +1,8 @@
 import collection from './collection'
+import db from  '../db'
 
 const all = () => {
+    db.open()
     return collection
 }
 
