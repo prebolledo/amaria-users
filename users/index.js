@@ -1,25 +1,22 @@
 import collection from './collection'
-import db from  '../db'
+import {mongoose, connection} from  '../db'
+import userSchema from './userSchema'
 
-const all = () => {
-    db.open()
-    return collection
+const all = async () => {
+    const User = await connection.model("User", userSchema, 'users')
+    const users = await User.find({})
+    return users.lean()
 }
 
-const get = (id) => {
-    const users = collection.filter(user => user.id == id)
-    let user = null
-    if(users.length > 0){
-        user = users[0]
-    }
-    return user
+const get = async (id) => {
+    const User = connection.model("User", userSchema, 'users')
+    const user = await User.findOne({_id:id}) //.populate('friends')
+    return user ? user.toObject() : null
 }
 
-const create = (user) => {
-    user.id = collection.length + 1
-    collection.push(user)
-    const {id} = user
-    return {id}
+const create = async (user) => {
+    const User = await connection.model("User", userSchema, 'users')
+    return await User.create(user)
 }
 
 const remove = (id) => {
@@ -33,3 +30,14 @@ export default {
     create,
     remove,
 }
+
+//findOneAndUpdate(filter, update,[{new:true /*return doc updated*/,upsert: true /*si no existe lo crea*/}])
+//updateOne
+// findOne(filter) and doc.save()
+//create(obj)
+//deleteMany(filter)
+//find(filter)
+//populate('attr')
+//attr: { type: Number, default: 0 }
+//attr: { type: Number, index:true }
+//createAt: { type: Date, default: Date.now }

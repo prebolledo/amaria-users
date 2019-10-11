@@ -7,12 +7,12 @@ server(
     (app) => {
         
         //Obtener todos los users
-        app.get('/',(req, res, next)=>{
-            res.status(200).json(users.all())
+        app.get('/',async (req, res, next)=>{
+            res.status(200).json(await users.all())
         })
 
-        app.get('/:id',(req, res, next)=>{
-            const user = users.get(req.params.id)
+        app.get('/:id',async (req, res, next)=>{
+            const user = await users.get(req.params.id)
 
             if(user){
                 res.status(200).json(user) 
@@ -33,8 +33,8 @@ server(
             
         })     
 
-        app.post('/',(req, res, next)=>{
-            res.status(200).json(users.create(req.body)) 
+        app.post('/',async (req, res, next)=>{
+            res.status(200).json(await users.create(req.body)) 
         })        
     }
 )
