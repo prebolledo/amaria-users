@@ -27,19 +27,19 @@ const server = (setRoutes) => {
 
     //404 error
     app.use((req, res, next) => {
-        res.status(404).json(wrapper.error({
+        res.status(404).json({
             code: 404,
             message: "Not Found"
-        }))
+        })
     })
 
     //500 error
     app.use(function(err, req, res, next) {
-        res.status(500).json(wrapper.error({
+        res.status(500).json({
             code: 500,
             message: err.message || null,
             stack: err.stack || null,
-        }))
+        })
     })
 
     const PORT = process.env.PORT || 3000

@@ -1,27 +1,42 @@
-import collection from './collection'
-import {mongoose, connection} from  '../db'
-import userSchema from './userSchema'
+import User from './User'
 
-const all = async () => {
-    const User = await connection.model("User", userSchema, 'users')
-    const users = await User.find({})
-    return users.lean()
+const all = async (params) => {
+    const filter = {}
+    if(
+        typeof(params.active) != 'undefined' 
+        && 
+        ['true','false'].includes(params.active)
+    ){
+        filter.active = params.active == 'true'
+    }
+    
+    const users = await User.find(filter).lean()
+    return users
 }
 
 const get = async (id) => {
-    const User = connection.model("User", userSchema, 'users')
-    const user = await User.findOne({_id:id}) //.populate('friends')
+    const user = await User.findOne({_id:id}).populate('friends')
     return user ? user.toObject() : null
 }
 
 const create = async (user) => {
-    const User = await connection.model("User", userSchema, 'users')
     return await User.create(user)
 }
 
-const remove = (id) => {
-    let i = collection.findIndex((user) => user.id == id)
-    return i >= 0 && collection.splice(i,1).length > 0
+const remove = async (id) => {
+    const result = await User.deleteMany({_id:id})
+    return result.deleteCount > 0
+}
+
+const update = async (id, data) =>{
+    const user = await User.findOneAndUpdate({_id:id},data,{new:true})
+    return user
+}
+
+const activate = async (id) => {
+    const user = await User.findOne({_id:id})
+    user.active = true
+    return await user.save() != null
 }
 
 export default {
@@ -29,6 +44,8 @@ export default {
     get,
     create,
     remove,
+    update,
+    activate,
 }
 
 //findOneAndUpdate(filter, update,[{new:true /*return doc updated*/,upsert: true /*si no existe lo crea*/}])

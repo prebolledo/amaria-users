@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 console.log('MONGO::CONNECT::INIT')
-mongoose.connect("mongodb://mongo/training", {
+mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
     useCreateIndex: true,        
     autoReconnect:true,
