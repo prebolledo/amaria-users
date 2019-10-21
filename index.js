@@ -13,22 +13,14 @@ server(
 
         app.get('/:id',async (req, res, next)=>{
             const user = await users.get(req.params.id)
-            if(user){
-                res.status(200).json(user) 
-            }else{
-                res.status(404).json(user) 
-            }
-            
+            const code = user ? 200 : 500
+            res.status(code).json(user)            
         })
 
         app.delete('/:id',async (req, res, next)=>{
             const result = await users.remove(req.params.id)
-
-            if(result){
-                res.status(200).json(result) 
-            }else{
-                res.status(500).json(result) 
-            }
+            const code = result ? 200 : 500
+            res.status(code).json(result)
             
         })     
 
@@ -39,9 +31,6 @@ server(
         app.put('/:id',async (req, res, next)=>{
             res.status(200).json(await users.update(req.params.id, req.body)) 
         })      
-        
-        app.put('/:id/activate/',async (req, res, next)=>{
-            res.status(200).json(await users.activate(req.params.id)) 
-        })        
+           
     }
 )

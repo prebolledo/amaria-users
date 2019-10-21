@@ -1,5 +1,7 @@
 import User from './User'
 
+const fetch = require('node-fetch');
+
 const all = async (params) => {
     const filter = {}
     if(
@@ -15,8 +17,9 @@ const all = async (params) => {
 }
 
 const get = async (id) => {
-    const user = await User.findOne({_id:id}).populate('friends')
-    return user ? user.toObject() : null
+    let user = await User.findOne({_id:id}).populate('friends')
+    user = user ? user.toObject() : null
+    return user
 }
 
 const create = async (user) => {
@@ -25,7 +28,8 @@ const create = async (user) => {
 
 const remove = async (id) => {
     const result = await User.deleteMany({_id:id})
-    return result.deleteCount > 0
+    console.log(result)
+    return result.deletedCount > 0
 }
 
 const update = async (id, data) =>{
@@ -47,14 +51,3 @@ export default {
     update,
     activate,
 }
-
-//findOneAndUpdate(filter, update,[{new:true /*return doc updated*/,upsert: true /*si no existe lo crea*/}])
-//updateOne
-// findOne(filter) and doc.save()
-//create(obj)
-//deleteMany(filter)
-//find(filter)
-//populate('attr')
-//attr: { type: Number, default: 0 }
-//attr: { type: Number, index:true }
-//createAt: { type: Date, default: Date.now }

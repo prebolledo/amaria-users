@@ -5,8 +5,8 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
     name: String,
     email: String,
-    active: Boolean,
-    friends:[{ type: Schema.Types.ObjectId, ref: 'User' }],
+    address: String,
+    active: { type: Boolean, default: true },
     createAt: { type: Date, default: Date.now },
 })
 

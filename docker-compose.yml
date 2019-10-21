@@ -1,7 +1,7 @@
 version: '3.7'
 services: 
-  mongo:
-      container_name: mongo-users
+  amaris-mongo:
+      container_name: mongodb-users
       image: mongo
       networks:
           - backend        
@@ -16,7 +16,7 @@ services:
         - backend      
     ports:
       - "4000:4000"
-      - "9000:9229"      
+      - "9229:9229"      
     build: 
       context: .
       dockerfile: Dockerfile      
@@ -27,7 +27,7 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-        - mongo      
+        - amaris-mongo      
 
 networks:
     backend:
